@@ -9,6 +9,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,46 +47,60 @@ fun ProfilePage(onNavigate: () -> Unit) {
             .background(Color(0xFFC7CDD7)) // Page background
     ) {
         // Top Navbar
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF2563EB)) // Same blue as before
-                .padding(vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(Color(0xFF2563EB))
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Logo on top
+            // Logo on the left
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(40.dp)
                         .background(Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "SS",
-                        color = Color(0xFF2563EB),
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text("SS", color = Color(0xFF2563EB), fontWeight = FontWeight.Bold)
                 }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Navbar items under logo
+            // Navigation items on the right
             Row(
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 9.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 NavbarItem("Home")
                 NavbarItem("Features")
-                NavbarItem("Analytics")
-                NavbarItem("Inventory")
+
+                var expanded by remember { mutableStateOf(false) }
+
+                Box {
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Analytics") },
+                            onClick = { expanded = false }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Inventory") },
+                            onClick = { expanded = false }
+                        )
+                    }
+                }
             }
         }
 
